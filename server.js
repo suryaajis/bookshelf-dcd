@@ -4,28 +4,40 @@ const host = "localhost"
 
 const requestListener = (request, response) => {
   response.setHeader('Content-Type', 'text/html');
-
-  const { method } = request;
- 
-    if(method === 'GET') {
-        // response ketika GET
-    }
- 
-    if(method === 'POST') {
-        // response ketika POST
-    }
- 
-    if(method === "PUT") {
-
-    }
-
-    if(method === "DELETE") {
-      
-    }
-
- 
   response.statusCode = 200;
-  response.end('<h1>Halo HTTP Server!</h1>');
+
+  const { url, method } = request;
+    
+    if (url === "/") {
+      if(method === 'GET') {
+        response.end('<h1>Halo HTTP Server GET Method!</h1>');
+      }
+    }
+ 
+    if (url === ".item") {
+
+      if(method === 'GET') {
+        response.end('<h1>Halo HTTP Server GET Method!</h1>');
+      } else if(method === 'POST') {
+        let body = [];
+   
+        request.on('data', (chunk) => {
+          body.push(chunk);
+        });
+     
+        request.on('end', () => {
+          body = Buffer.concat(body).toString();
+          const data = JSON.parse(body)
+            
+          response.end(`<h1>Halo HTTP Server POST Method! ${data}</h1>`);
+        });
+      } else if (method === "PUT") {
+        response.end('<h1>Halo HTTP Server PUT Method!</h1>');
+      } else {
+        response.end('<h1>Halo HTTP Server DELETE Method!</h1>');
+      }
+
+    }
 }
 
 const server = http.createServer(requestListener)
