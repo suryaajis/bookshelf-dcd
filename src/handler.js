@@ -68,10 +68,11 @@ const addBookHandler = (request, h) => {
 };
 
 const getAllbooksHandler = (request, h) => {
+  const { reading, finished, name } = request.query;
+
   if (books.length === 0) {
     const response = h.response({
       status: "success",
-      message: "Buku berhasil ditambahkan",
       data: {
         books: [],
       },
@@ -90,7 +91,6 @@ const getAllbooksHandler = (request, h) => {
 
   const response = h.response({
     status: "success",
-    message: "Buku berhasil ditambahkan",
     data: {
       books: newBooks,
     },
@@ -114,6 +114,7 @@ const getBookByIdHandler = (request, h) => {
     response.code(200);
     return response;
   }
+
   const response = h.response({
     status: "fail",
     message: "Buku tidak ditemukan",
@@ -160,6 +161,7 @@ const editBookByIdHandler = (request, h) => {
 
   if (index !== -1) {
     books[index] = {
+      ...books[index],
       name,
       year,
       author,
