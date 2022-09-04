@@ -70,7 +70,6 @@ const addBookHandler = (request, h) => {
 const getAllbooksHandler = (request, h) => {
   const { name, reading, finished } = request.query
   let newBooks
-
   if (books.length === 0) {
     const response = h.response({
       status: "success",
